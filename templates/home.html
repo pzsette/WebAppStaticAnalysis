@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}{% endblock %}</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	</head>
+	<body class="loggedin">
+		<nav class="navtop">
+			<div>
+				<h1>Bank</h1>
+                <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>
+				<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+			</div>
+		</nav>
+		<div class="content">
+			<h2>Account</h2>
+            <div class="login">
+                <h1>Welcome back, {{ session.name }} {{ session.surname }}!</h1>
+                <p>Balance:</p>
+                <form>
+                    <label for="amount">
+					<i class="fas fa-dollar-sign"></i>
+				    </label>
+                    <input type="number" type="subimit" name="amount" placeholder="amount" id="amount"required>
+                </form>
+            </div>
+		</div>
+	</body>
+</html>
