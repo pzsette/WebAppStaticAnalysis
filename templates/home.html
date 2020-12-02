@@ -18,7 +18,7 @@
 			<h2>Account</h2>
             <h2>Welcome back, {{ session.name }} {{ session.surname }}!</h2>
             <div class="balance">
-                <p>Balance:  <p id="amount">{{ balance }}</p></p>
+                <p>Balance:   {{ balance }}$</p>
             </div>
             <div class="operations">
                 <form action="{{ url_for('action') }}" method="post">
