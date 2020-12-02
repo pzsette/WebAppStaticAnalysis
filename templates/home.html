@@ -16,11 +16,10 @@
 		</nav>
 		<div class="content">
 			<h2>Account</h2>
-            <h1>Welcome back, {{ session.name }} {{ session.surname }}!</h1>
-            <div id="balance">
-                <p>Balance:  <p id="amount">100</p></p>
+            <h2>Welcome back, {{ session.name }} {{ session.surname }}!</h2>
+            <div class="balance">
+                <p>Balance:  <p id="amount">{{ balance }}</p></p>
             </div>
-
             <div class="operations">
                 <form action="{{ url_for('action') }}" method="post">
                     <div class="step">

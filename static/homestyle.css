@@ -1,7 +1,6 @@
 * {
   	box-sizing: border-box;
   	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-  	font-size: 17px;
 }
 body {
   	background-color: #435165;
@@ -43,6 +42,7 @@ body {
 .navtop div a:hover {
   	color: #eaebed;
 }
+
 body.loggedin {
   	background-color: #f3f4f7;
 }
@@ -52,81 +52,76 @@ body.loggedin {
   	margin: 0 auto;
 }
 .content h2 {
-  	margin: 0;
+  	/*margin: 0;*/
   	padding: 25px 0;
-  	font-size: 22px;
   	border-bottom: 1px solid #e0e0e3;
   	color: #4a536e;
 }
-.content > p, .content > div {
+/*.content > p, .content > div {
   	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
   	margin: 25px 0;
   	padding: 25px;
 	background-color: #fff;
-}
+}*/
 .content > p table td, .content > div table td {
 	padding: 5px;
 }
 
-.step {
-    margin-top: 15px;
-}
-
-.operations form {
+/*.operations form {
   	display: block;
-  	padding-top: 20px;
-}
+}*/
 
-#balance {
+.balance {
 	text-align: center;
-    width: 600px;
+    width: 360px;
 	display: flex;
 }
 
-.action form input[type="password"] {
+/*.action form input[type="password"] {
   	height: 50px;
   	border: 1px solid #dee0e4;
   	margin-bottom: 20px;
   	padding: 0 15px;
-}
+}*/
 .operations {
-  	width: 600px;
+  	width: 360px;
   	background-color: #ffffff;
   	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
   	margin: 100px auto;
+	text-align: center;
 }
-.operations {
+/*.operations {
   	text-align: center;
   	color: #5b6574;
-  	font-size: 24px;
   	padding: 20px 0 20px 0;
   	border-bottom: 1px solid #dee0e4;
-}
-.operations .links {
+	display: inline-flex;
+	/*padding: 0 10px 10px 10px;
+}*/
+
+/*.operations .links {
   	display: flex;
   	padding: 0 15px;
-}
-.operations {
+}*/
+
+/*.operations {
   	color: #adb2ba;
   	text-decoration: none;
   	display: inline-flex;
   	padding: 0 10px 10px 10px;
   	font-weight: bold;
-}
-.operations {
-  	color: #9da3ac;
-}
+}*/
 
-.operations form label {
+/*.operations form label {
   	justify-content: center;
   	align-items: center;
   	width: 50px;
   	height: 50px;
   	background-color: #3274d6;
   	color: #ffffff;
-}
+}*/
 
-.operations form input[type="password"], .login form input[type="number"], select {
+.operations form input[type="password"], .operations form input[type="number"], select {
   	width: 310px;
   	height: 50px;
   	border: 1px solid #dee0e4;
@@ -142,6 +137,5 @@ body.loggedin {
   	cursor: pointer;
   	font-weight: bold;
   	color: #ffffff;
-  	transition: background-color 0.2s;
 }
 

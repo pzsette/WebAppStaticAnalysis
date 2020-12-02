@@ -43,7 +43,7 @@ def login():
             session['surname'] = account[2]
             session['email'] = account[4]
             # Redirect to home page
-            return render_template('home.html', msg=msg)
+            return home()
         else:
             # Account doesnt exist or email/password incorrect
             msg = 'Incorrect email/password!'
@@ -63,7 +63,7 @@ def signup():
         email = request.form['email']
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM accounts WHERE email = %s', (email,))
+        cursor.execute('SELECT * FROM accounts WHERE email = %s', email)
         account = cursor.fetchone()
         # If account exists show error and validation checks
         if account:
@@ -100,9 +100,9 @@ def logout():
 def home():
     if 'loggedin' in session:
         cursor = mysql.connection.cursor()
-        cursor.execute(" SELECT amount FROM accounts WHERE name='Pietro' AND surname='Zarri' ")
-        data = cursor.fetchall()[0][0]
-        return render_template('home.html', amount=data)
+        cursor.execute(" SELECT amount FROM accounts WHERE id = %s", (str(session["id"])))
+        data = cursor.fetchone()[0]
+        return render_template('home.html', balance=data)
     return redirect(url_for('login'))
 
 
@@ -113,33 +113,25 @@ def action():
         print(request.form["amount"])
         print(request.form["password"])
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT password FROM accounts WHERE id = %s", (str(session['id'])))
+        session_id = str(session['id'])
+        cursor.execute("SELECT password FROM accounts WHERE id = %s", (session_id))
         psw = cursor.fetchone()
         if psw:
             if psw[0] == request.form["password"]:
+                cursor.execute("SELECT amount FROM accounts WHERE id = %s", session_id)
+                actual_amount = cursor.fetchone()
                 if request.form["action"] == 'Withdraw':
-                    cursor.execute("SELECT amount FROM accounts WHERE id = %s", str(session['id']))
-                    actual_amount = cursor.fetchone()
-                    if (int(actual_amount[0]) - int(request.form["amount"]))>= 0:
-                        balance = int(actual_amount[0]) - int(request.form["amount"])
-                        withdraw(balance)
+                    if (int(actual_amount[0]) - int(request.form["amount"])) >= 0:
+                        new_balance = int(actual_amount[0]) - int(request.form["amount"])
+                        cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
+                        mysql.connection.commit()
                     else:
                         print("non se po fa")
                 else:
-                    deposit()
-    return render_template('home.html')
-
-
-def withdraw(new_balance):
-    print(session['id'])
-    print("se po fare prelievo")
-    print(new_balance)
-
-
-def deposit():
-    print("deposito")
-
-
+                    new_balance = int(actual_amount[0]) + int(request.form["amount"])
+                    cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
+                    mysql.connection.commit()
+    return home()
 
 
 if __name__ == '__main__':
