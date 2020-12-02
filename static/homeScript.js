@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+    function performOperation() {
+        console.log("Done!");
+    }
+
     $('#deposit').click(function () {
         let deposit_amount = document.getElementById("value").value;
         let actual_amount = document.getElementById("value").value;

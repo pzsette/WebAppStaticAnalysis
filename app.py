@@ -43,10 +43,8 @@ def login():
             session['surname'] = account[2]
             session['email'] = account[4]
             # Redirect to home page
-            print("successo")
             return render_template('home.html', msg=msg)
         else:
-            print("solita merda")
             # Account doesnt exist or email/password incorrect
             msg = 'Incorrect email/password!'
     return render_template('login.html', msg=msg)
@@ -108,29 +106,40 @@ def home():
     return redirect(url_for('login'))
 
 
-@app.route('/deposit/<amount>/<actual_amount>', methods=['POST'])
-def deposit(amount, actual_amount):
+@app.route('/action/', methods=['POST'])
+def action():
     if request.method == 'POST':
+        print(request.form["action"])
+        print(request.form["amount"])
+        print(request.form["password"])
         cursor = mysql.connection.cursor()
-        data = str(int(actual_amount) + int(amount))
-        sql ="UPDATE accounts SET amount='"+data+"' WHERE name='PIETRO' "
-        print(sql)
-        cursor.execute(sql)
-        mysql.connection.commit()
-        print("executed")
-    return "ok"
+        cursor.execute("SELECT password FROM accounts WHERE id = %s", (str(session['id'])))
+        psw = cursor.fetchone()
+        if psw:
+            if psw[0] == request.form["password"]:
+                if request.form["action"] == 'Withdraw':
+                    cursor.execute("SELECT amount FROM accounts WHERE id = %s", str(session['id']))
+                    actual_amount = cursor.fetchone()
+                    if (int(actual_amount[0]) - int(request.form["amount"]))>= 0:
+                        balance = int(actual_amount[0]) - int(request.form["amount"])
+                        withdraw(balance)
+                    else:
+                        print("non se po fa")
+                else:
+                    deposit()
+    return render_template('home.html')
 
 
-@app.route('/withdraw/<amount>/<actual_amount>')
-def withdraw(amount, actual_amount):
-    if request.method == 'POST':
-        cursor = mysql.connection.cursor()
-        data = str(int(actual_amount) - int(amount))
-        sql ="UPDATE accounts SET amount ='"+ data +"' WHERE name='PIETRO' AND surname='ZARRI'"
-        print(sql)
-        cursor.execute(sql)
-        mysql.connection.commit()
-    return "ok"
+def withdraw(new_balance):
+    print(session['id'])
+    print("se po fare prelievo")
+    print(new_balance)
+
+
+def deposit():
+    print("deposito")
+
+
 
 
 if __name__ == '__main__':
