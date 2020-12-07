@@ -97,12 +97,15 @@ def logout():
 
 
 @app.route('/home')
-def home():
+def home(msg=None):
     if 'loggedin' in session:
         cursor = mysql.connection.cursor()
         cursor.execute(" SELECT amount FROM accounts WHERE id = %s", (str(session["id"])))
         data = cursor.fetchone()[0]
-        return render_template('home.html', balance=data)
+        if msg is None:
+            return render_template('home.html', balance=data)
+        else:
+            return render_template('home.html', balance=data, msg=msg)
     return redirect(url_for('login'))
 
 
@@ -126,7 +129,8 @@ def action():
                         cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
                         mysql.connection.commit()
                     else:
-                        print("non se po fa")
+                        msg = "You don't have enough money!"
+                        return home(msg=msg)
                 else:
                     new_balance = int(actual_amount[0]) + int(request.form["amount"])
                     cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
@@ -135,4 +139,4 @@ def action():
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000)
+    app.run(host='localhost', port=5000, debug=True)

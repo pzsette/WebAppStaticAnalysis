@@ -72,7 +72,7 @@ body.loggedin {
 .operations {
 	margin-top: 25px;
   	width: 360px;
-	padding: 25px;
+	padding-top: 25px;
   	background-color: #ffffff;
   	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
 	text-align: center;
@@ -89,10 +89,10 @@ body.loggedin {
 .operations form input[type="submit"] {
   	width: 100%;
   	padding: 15px;
+	margin-top: 20px;
   	background-color: #3274d6;
   	border: 0;
   	cursor: pointer;
-  	font-weight: bold;
   	color: #ffffff;
 }
 
