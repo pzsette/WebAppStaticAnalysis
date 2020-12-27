@@ -3,41 +3,65 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icon.png') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="static/home_script.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html-inspector/0.8.2/html-inspector.js"></script>
+        <script>
+            //HTMLInspector.inspect();
+        </script>
 	</head>
 	<body class="loggedin">
 		<nav class="navtop">
 			<div>
 				<h1>Bank</h1>
-				<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+				<a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
 			</div>
 		</nav>
 		<div class="content">
 			<h2>Account</h2>
             <h2>Welcome back, {{ session.name }} {{ session.surname }}!</h2>
+            <a style="position:absolute; right:330px; top:90px; color: #5b6574; font-weight: bold"href="{{url_for('idcard.showidcard') }}">Show IdCard</a>
             <div class="balance">
-                <p>Balance:   {{ balance }}$</p>
+                <p style="font-weight: bold; font-size: 18px">Balance:   {{ balance }}$</p>
             </div>
             <div class="operations">
-                <form action="{{ url_for('action') }}" method="post">
+                <form action="{{ url_for('home.actions') }}" method="post">
                     <div class="step">
-                        <select name="action">
+                        <select class="actionFontAndSize" name="action">
                             <option>Deposit</option>
                             <option>Withdraw</option>
                         </select>
                     </div>
                     <div class="step">
-                        <input type="number" name="amount" placeholder="amount" id="amount"required>
+                        <input class="actionFontAndSize" type="number" name="amount" placeholder="amount" required>
                     </div>
                     <div class="step">
-                        <input  type="password" name="password" placeholder="confirm password" id="amount"required>
+                        <input class="actionFontAndSize" type="text" name="causal" placeholder="causal" required>
                     </div>
-                    <div class="msg">{{ msg }}</div>
                     <div class="step">
-                        <input type="submit" value="Action">
+                        <input class="actionFontAndSize"  type="password" name="password" placeholder="confirm password" id="amount"required>
+                    </div>
+                    <div class="step">
+                        <input class="actionFontAndSize" type="submit" value="Confirm">
                     </div>
                 </form>
+            </div>
+
+            <div class="resume">
+                <ul class="operationsList">
+                    {%  for op in operationsList %}
+                    <li>
+                        <div class="operation">
+                            <p class="operationTypeAndDate">{{ op[5] }}: {{ op[3] }}$</p>
+                            <p style="color: #5b6574; margin: 3px">{{ op[2].date() }}</p>
+                            <p style="margin: 3px">{{ op[4] }}  </p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
 		</div>
 	</body>

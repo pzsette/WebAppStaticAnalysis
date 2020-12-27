@@ -3,17 +3,24 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Login</title>
+
+        <link rel="shortcut icon" href="{{ url_for('static', filename='icon.png') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+
+        <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/html-inspector/0.8.2/html-inspector.js"></script>
+        <script> HTMLInspector.inspect() </script>-->
+
 	</head>
 	<body>
 		<div class="login">
 			<h1>Login</h1>
 			<div class="links">
-				<a href="{{ url_for('login') }}" class="active">Login</a>
-				<a href="{{ url_for('signup') }}">Register</a>
+				<a href="{{ url_for('auth.login') }}" class="active">Login</a>
+				<a href="{{ url_for('auth.signup') }}">Register</a>
 			</div>
-			<form action="{{ url_for('login') }}" method="post">
+			<form action="{{ url_for('auth.login') }}" method="post">
+            <form action="?" method="post" onsubmit="login();return false">
 				<label for="email">
 					<i class="fas fa-envelope"></i>
 				</label>

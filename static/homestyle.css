@@ -62,7 +62,7 @@ body.loggedin {
 .balance {
 	margin-top: 25px;
 	padding-left: 25px;
-	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
 	background-color: #fff;
 	/*text-align: center;*/
     width: 360px;
@@ -70,15 +70,16 @@ body.loggedin {
 }
 
 .operations {
+	float: left;
 	margin-top: 25px;
   	width: 360px;
 	padding-top: 25px;
   	background-color: #ffffff;
-  	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+  	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
 	text-align: center;
 }
 
-.operations form input[type="password"], .operations form input[type="number"], select {
+.operations form input[type="password"], .operations form input[type="text"], .operations form input[type="number"], select {
   	width: 310px;
   	height: 50px;
   	border: 1px solid #dee0e4;
@@ -87,6 +88,7 @@ body.loggedin {
 }
 
 .operations form input[type="submit"] {
+	font-weight: bold;
   	width: 100%;
   	padding: 15px;
 	margin-top: 20px;
@@ -95,4 +97,50 @@ body.loggedin {
   	cursor: pointer;
   	color: #ffffff;
 }
+
+.resume {
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+	background-color: white;
+	margin: 10px;
+	margin-top: 25px;
+	float: right;
+	width: 390px;
+	height: 370px;
+}
+
+.operationsList {
+	list-style-type: none;
+	height: 90%;
+	overflow: auto;
+}
+
+.operationsList ul {
+	margin: auto;
+}
+
+
+.operationsList li {
+	text-decoration: none;
+	padding: 0px 40px 15px 0px;
+	display: block;
+}
+
+.operation {
+	padding: 10px;
+	border: 1px #dee0e4 solid;
+	height: 80px;
+}
+
+.actionFontAndSize {
+	font-size: 15px;
+}
+
+
+.operationTypeAndDate {
+	font-weight: bold;
+	margin: 0px 0px 0px 3px;
+}
+
+
+
 
