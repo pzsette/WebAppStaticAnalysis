@@ -1,4 +1,5 @@
 from flask import session, render_template, Blueprint, redirect, url_for, current_app, request
+from markupsafe import Markup
 from werkzeug.utils import secure_filename
 from database import db
 import home
@@ -16,9 +17,13 @@ def signup():
     if request.method == 'POST' and 'name' in request.form and 'surname' in request.form and 'password' in request.form and 'email' in request.form:
         # Create variables for easy access
         name = request.form['name']
+        name = Markup.escape(name)
         surname = request.form['surname']
+        surname = Markup.escape(surname)
         password = request.form['password']
+        password = Markup.escape(password)
         email = request.form['email']
+        email = Markup.escape(email)
         id_card = request.files['file']
         if id_card and allowed_file(id_card.filename):
 
@@ -66,14 +71,12 @@ def login():
         # Create variables for easy access
         email = request.form['email']
         password = request.form['password']
-        # Check if account exists using MySQL
         cursor = db.connection.cursor()
 
         # cursor.execute('SELECT * FROM accounts WHERE email = %s AND password = %s', (email, password))
 
         # TEXT TO LOGIN WITH SQL INJECTION: xxx@xxx' OR 1 = 1 LIMIT 1 -- '
         cursor.execute("SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'")
-        # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
         if account:
@@ -84,7 +87,7 @@ def login():
             session['surname'] = account[2]
             session['email'] = account[4]
             # Redirect to home page
-            return redirect(url_for('home.home', sessionId=account[0]))
+            return redirect(url_for('home.home', surname=account[2]))
         else:
             # Account doesnt exist or email/password incorrect
             msg = 'Incorrect email/password!'

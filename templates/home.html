@@ -7,10 +7,9 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="static/home_script.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html-inspector/0.8.2/html-inspector.js"></script>
         <script>
-            //HTMLInspector.inspect();
+            HTMLInspector.inspect();
         </script>
 	</head>
 	<body class="loggedin">
@@ -39,11 +38,14 @@
                         <input class="actionFontAndSize" type="number" name="amount" placeholder="amount" required>
                     </div>
                     <div class="step">
-                        <input class="actionFontAndSize" type="text" name="causal" placeholder="causal" required>
+                        <input class="actionFontAndSize" type="text" name="causal" placeholder="note" required>
                     </div>
                     <div class="step">
                         <input class="actionFontAndSize"  type="password" name="password" placeholder="confirm password" id="amount"required>
                     </div>
+                    {% if msg != None %}
+                    <div class="msg">{{ msg }}</div>
+                    {% endif %}
                     <div class="step">
                         <input class="actionFontAndSize" type="submit" value="Confirm">
                     </div>

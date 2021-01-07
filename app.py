@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, session
 
 from database import db
 import auth
@@ -26,7 +26,10 @@ app.register_blueprint(idcard.bp)
 
 @app.route('/')
 def hello_world():
-    return redirect(url_for('auth.login'))
+    if 'loggedin' in session:
+        return redirect(url_for('home.home', surname=session['surname']))
+    else:
+        return redirect(url_for('auth.login'))
 
 
 if __name__ == '__main__':
