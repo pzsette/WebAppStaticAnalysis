@@ -1,36 +1,34 @@
-from flask import Flask, redirect, url_for, session
 
-from database import db
-import auth
-import home
-import idcard
 
-app = Flask(__name__)
+
+
+
+#app.secret_key = 'MySecretKey$%&'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@127.0.0.1:8889/bank2'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Change this to your secret key (can be anything, it's for extra protection)
-app.secret_key = 'MySecretKey$%&'
-app.config['UPLOAD_FOLDER'] = "idcards"
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_PORT'] = 8889
-app.config['MYSQL_DB'] = 'bank'
-
-db.init_app(app)
+#app.secret_key = 'MySecretKey$%&'
 
 
-app.register_blueprint(auth.bp)
-app.register_blueprint(home.bp)
-app.register_blueprint(idcard.bp)
+#@app.route('/')
+#def hello_world():
+#    return 'Hello'
+#    if 'loggedin' in session:
+#        return redirect(url_for('home.home', surname=session['surname']))
+#    else:
+#        return redirect(url_for('auth.login'))
+
+'''@app.route('/')
+def testdb():
+    try:
+        db.session.query("1").from_statement("SELECT 1").all()
+        return '<h1>It works.</h1>'
+    except:
+        return '<h1>Something is broken.</h1>'''
 
 
-@app.route('/')
-def hello_world():
-    if 'loggedin' in session:
-        return redirect(url_for('home.home', surname=session['surname']))
-    else:
-        return redirect(url_for('auth.login'))
 
-
-if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+#if __name__ == '__main__':
+#    app.run(debug=True)

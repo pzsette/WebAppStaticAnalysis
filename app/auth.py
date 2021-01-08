@@ -2,7 +2,6 @@ from flask import session, render_template, Blueprint, redirect, url_for, curren
 from markupsafe import Markup
 from werkzeug.utils import secure_filename
 from database import db
-import home
 import re
 import os
 
