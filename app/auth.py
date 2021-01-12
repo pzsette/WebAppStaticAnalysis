@@ -1,5 +1,6 @@
 from flask import session, render_template, Blueprint, redirect, url_for, current_app, request
 from markupsafe import Markup
+from app.models.user import User
 from werkzeug.utils import secure_filename
 from database import db
 import re
@@ -27,16 +28,18 @@ def signup():
         if id_card and allowed_file(id_card.filename):
 
             # Check if account exists using MySQL
-            cursor = db.connection.cursor()
+            #cursor = db.connection.cursor()
 
             # HARCODED SQL
             # query = "'SELECT * FROM accounts WHERE email = " + email
             # cursor.execute(query)
 
             # SECURE VERSION
-            cursor.execute('SELECT * FROM accounts WHERE email = %s', [email])
+            #cursor.execute('SELECT * FROM accounts WHERE email = %s', [email])
+            #account = cursor.fetchone()
 
-            account = cursor.fetchone()
+            account = User.query.filter_by(email=email).first()
+
             # If account exists show error and validation checks
             if account:
                 msg = 'Account already exists!'
@@ -48,10 +51,15 @@ def signup():
                 filename = secure_filename(id_card.filename)
                 id_card.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
                 print(id_card.filename)
+                
                 # Account doesnt exists and the form data is valid, now insert new account into accounts table
-                cursor.execute("INSERT INTO accounts (name, surname, email, filename, password, amount) VALUES"
-                               "(%s, %s, %s, %s, %s, 0)", (name, surname, email, id_card.filename, password,))
-                db.connection.commit()
+                #cursor.execute("INSERT INTO accounts (name, surname, email, filename, password, amount) VALUES"
+                #               "(%s, %s, %s, %s, %s, 0)", (name, surname, email, id_card.filename, password,))
+                #db.connection.commit()
+
+                new_user = User(name, surname, email, password)
+                User.add(new_user)
+
                 msg = 'You have successfully registered!'
         else:
             msg = 'Only PNG/JPG/JPEG file are allowed'
