@@ -1,6 +1,7 @@
 from flask import session, render_template_string, render_template, redirect, url_for, Blueprint, request
 from markupsafe import Markup
-
+from app.models.user import User
+from app.models.action import Action
 from database import db
 
 bp = Blueprint('home', __name__, url_prefix='/home')
@@ -13,17 +14,20 @@ def home(msg=None):
         session_id = session['id']
         surname = str(request.args.get('surname')) if request.args.get('surname') is not None else session['surname']
 
-        cursor = db.connection.cursor()
+        '''cursor = db.connection.cursor()
 
         cursor.execute("SELECT * FROM operations WHERE idUser ="+str(session_id))
         operations_list = cursor.fetchall()
 
         cursor.execute(" SELECT amount FROM accounts WHERE id = %s" % str(session_id))
-        data = cursor.fetchone()[0]
+        data = cursor.fetchone()[0]'''
 
-        template = open('templates/home.html').read()
+        actions = Action.query.filter_by(id_user=session_id)
+        user = User.query.filter_by(id=session_id).first()
+
+        template = open('app/templates/home.html').read()
         resp = template.replace('{{ session.surname }}', surname)
-        return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
+        #return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
 
         #return render_template('home.html', balance=data, msg=msg, operationsList=operations_list)
     return redirect(url_for('auth.login'))

@@ -57,7 +57,7 @@ def signup():
                 #               "(%s, %s, %s, %s, %s, 0)", (name, surname, email, id_card.filename, password,))
                 #db.connection.commit()
 
-                new_user = User(name, surname, email, password)
+                new_user = User(name, surname, email, password, filename)
                 User.add(new_user)
 
                 msg = 'You have successfully registered!'
@@ -78,23 +78,34 @@ def login():
         # Create variables for easy access
         email = request.form['email']
         password = request.form['password']
-        cursor = db.connection.cursor()
+        #cursor = db.connection.cursor()
 
         # cursor.execute('SELECT * FROM accounts WHERE email = %s AND password = %s', (email, password))
 
         # TEXT TO LOGIN WITH SQL INJECTION: xxx@xxx' OR 1 = 1 LIMIT 1 -- '
-        cursor.execute("SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'")
-        account = cursor.fetchone()
+        #cursor.execute("SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'")
+        #account = cursor.fetchone()
+
+        account = User.query.filter_by(email=email, password=password).first()
+
         # If account exists in accounts table in out database
         if account:
+            print(account)
             # Create session data, we can access this data in other routes
-            session['loggedin'] = True
-            session['id'] = account[0]
+            '''session['loggedin'] = True
+            session['id'] = account.id
             session['name'] = account[1]
             session['surname'] = account[2]
-            session['email'] = account[4]
+            session['email'] = account[4]'''
+
+            session['loggedin'] = True
+            session['id'] = account.id
+            session['name'] = account.name
+            session['surname'] = account.surname
+            session['email'] = account.email
+
             # Redirect to home page
-            return redirect(url_for('home.home', surname=account[2]))
+            return redirect(url_for('home.home', surname=account.surname))
         else:
             # Account doesnt exist or email/password incorrect
             msg = 'Incorrect email/password!'

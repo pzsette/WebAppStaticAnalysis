@@ -5,6 +5,8 @@ mysql_db_name = 'bank2'
 mysql_db_port = '8889'
 mysql_db_hostname = '127.0.0.1'
 
+UPLOAD_FOLDER = 'idcards'
+
 DEBUG = True
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
