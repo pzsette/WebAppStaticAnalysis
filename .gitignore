@@ -151,4 +151,7 @@ cython_debug/
 .sonar
 .scannerwork
 
+# intellij configs
+.idea/
+
 .DS_Store
