@@ -88,6 +88,7 @@ def login():
 
         account = User.query.filter_by(email=email, password=password).first()
 
+
         # If account exists in accounts table in out database
         if account:
             print(account)
