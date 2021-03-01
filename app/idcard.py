@@ -10,9 +10,9 @@ bp = Blueprint('idcard', __name__, url_prefix='/idcard')
 def showidcard():
     session_id = str(session['id'])
 
-    '''cursor = db.connection.cursor()
-    cursor.execute("SELECT filename FROM accounts WHERE ID = " + session_id)
-    filename = (cursor.fetchone()[0])'''
+    #cursor = db.connection.cursor()
+    #cursor.execute("SELECT filename FROM accounts WHERE ID = " + session_id)
+    #filename = (cursor.fetchone()[0])
 
     filename = User.query.filter_by(id=session_id).first().filename
 

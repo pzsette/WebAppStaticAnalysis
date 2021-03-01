@@ -12,7 +12,7 @@ def home(msg=None):
     if 'loggedin' in session:
 
         session_id = session['id']
-        surname = str(request.args.get('surname')) if request.args.get('surname') is not None else session['surname']
+        #surname = str(request.args.get('surname')) if request.args.get('surname') is not None else session['surname']
 
         # cursor = db.connection.cursor()
         #
@@ -22,10 +22,10 @@ def home(msg=None):
         # cursor.execute(" SELECT amount FROM accounts WHERE id = %s" % str(session_id))
         # data = cursor.fetchone()[0]
 
-        # #VULNERABLE
-        # template = open('app/templates/home.html').read()
-        # resp = template.replace('{{ session.surname }}', surname)
-        # return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
+        #VULNERABLE
+        #template = open('app/templates/home.html').read()
+        #resp = template.replace('{{ session.surname }}', surname)
+        #return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
         #
         # return render_template('home.html', balance=data, msg=msg, operationsList=operations_list)
 
