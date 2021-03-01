@@ -57,9 +57,9 @@
                     {%  for op in operationsList %}
                     <li>
                         <div class="operation">
-                            <p class="operationTypeAndDate">{{ op.operation_type}}: {{ op.amount }}$</p>
-                            <p style="color: #5b6574; margin: 3px">{{ op.date }}</p>
-                            <p style="margin: 3px">{{ op.causal }}
+                            <p class="operationTypeAndDate">{{ op[5]}}: {{ op[3] }}$</p>
+                            <p style="color: #5b6574; margin: 3px">{{ op[2] }}</p>
+                            <p style="margin: 3px">{{ op[4] }}
                         </div>
                     </li>
                     {% endfor %}
