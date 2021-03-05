@@ -2,6 +2,7 @@ from flask import session, render_template, Blueprint, redirect, url_for, curren
 from markupsafe import Markup
 from werkzeug.utils import secure_filename
 from database import db
+import MySQLdb
 import re
 import os
 
@@ -16,13 +17,9 @@ def signup():
     if request.method == 'POST' and 'name' in request.form and 'surname' in request.form and 'password' in request.form and 'email' in request.form:
         # Create variables for easy access
         name = request.form['name']
-        name = Markup.escape(name)
         surname = request.form['surname']
-        surname = Markup.escape(surname)
         password = request.form['password']
-        password = Markup.escape(password)
         email = request.form['email']
-        email = Markup.escape(email)
         id_card = request.files['file']
         if id_card and allowed_file(id_card.filename):
             cursor = db.connection.cursor()
@@ -62,26 +59,24 @@ def signup():
 def login():
     msg = ''
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
-        # Output message if something goes wrong...
-        # Create variables for easy access
         email = request.form['email']
         password = request.form['password']
         cursor = db.connection.cursor()
 
         # TEXT TO LOGIN WITH SQL INJECTION: xxx@xxx' OR 1 = 1 LIMIT 1 -- '
-        cursor.execute("SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'")
+        query = "SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'"
+        cursor.execute(query)
+
         account = cursor.fetchone()
 
         # If account exists in accounts table in out database
         if account:
-            print(account)
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
             session['id'] = account[0]
             session['name'] = account[1]
             session['surname'] = account[2]
             session['email'] = account[4]
-
 
             # Redirect to home page
             return redirect(url_for('home.home', surname=account[2]))

@@ -24,8 +24,6 @@ def home(msg=None):
         resp = template.replace('{{ session.surname }}', surname)
         return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
 
-        return render_template('home.html', balance=data, msg=msg, operationsList=operations_list)
-
     return redirect(url_for('auth.login'))
 
 
@@ -41,28 +39,27 @@ def actions():
         cursor.execute("SELECT password FROM accounts WHERE id ="+session_id)
         psw = cursor.fetchone()
 
-        if psw:
-            if psw[0] == request.form["password"]:
-                cursor.execute("SELECT amount FROM accounts WHERE id = "+session_id)
-                actual_balance = cursor.fetchone()
-                amount = int(Markup.escape(request.form["amount"]))
-                if request.form["action"] == 'Withdraw':
-                    if (int(actual_balance[0]) - int(amount)) >= 0:
-                        new_balance = int(actual_balance[0]) - amount
-                        cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
-                        cursor.execute("INSERT INTO operations (idUser, amount, causal ,operationType) VALUES "
-                                       "(%s, %s, %s, %s)", (session_id, amount, causal, 'withdraw'))
-                        db.connection.commit()
-                    else:
-                        msg = "You don't have enough money!"
-                        return home(msg=msg)
-                else:
-                    new_balance = int(actual_balance[0]) + int(amount)
-
-                    #VULNERABLE
+        if psw[0] == request.form["password"]:
+            cursor.execute("SELECT amount FROM accounts WHERE id = "+session_id)
+            actual_balance = cursor.fetchone()
+            amount = int(Markup.escape(request.form["amount"]))
+            if request.form["action"] == 'Withdraw':
+                if (int(actual_balance[0]) - int(amount)) >= 0:
+                    new_balance = int(actual_balance[0]) - amount
                     cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
                     cursor.execute("INSERT INTO operations (idUser, amount, causal ,operationType) VALUES "
-                                   "(%s, %s, %s, %s)", (session_id, amount, causal, 'deposit'))
+                                   "(%s, %s, %s, %s)", (session_id, amount, causal, 'withdraw'))
                     db.connection.commit()
+                else:
+                    msg = "You don't have enough money!"
+                    return home(msg=msg)
+            else:
+                new_balance = int(actual_balance[0]) + int(amount)
+
+                #VULNERABLE
+                cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
+                cursor.execute("INSERT INTO operations (idUser, amount, causal ,operationType) VALUES "
+                               "(%s, %s, %s, %s)", (session_id, amount, causal, 'deposit'))
+                db.connection.commit()
 
         return home()
