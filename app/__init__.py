@@ -15,10 +15,8 @@ def create_app():
         app.register_blueprint(auth.bp)
         app.register_blueprint(home.bp)
         app.register_blueprint(idcard.bp)
-    #with app.app_context():
 
         db.create_all()
         db.session.commit()
-
     return app
 
