@@ -1,8 +1,5 @@
 from flask import session, render_template, Blueprint, redirect, url_for, current_app, request
-from markupsafe import Markup
-from werkzeug.utils import secure_filename
 from database import db
-import MySQLdb
 import re
 import os
 
@@ -22,9 +19,15 @@ def signup():
         email = request.form['email']
         id_card = request.files['file']
         if id_card and allowed_file(id_card.filename):
-            cursor = db.connection.cursor()
 
-            query = "'SELECT * FROM accounts WHERE email = " + email
+            cursor = db.connection.cursor()
+            reveal_type(db)
+            reveal_type(db.connection)
+            reveal_type(db.connection.cursor())
+            reveal_type(cursor)
+            reveal_type(cursor.execute)
+
+            query = "SELECT * FROM accounts WHERE email ='"+email+"'"
             cursor.execute(query)
 
             account = cursor.fetchone()
@@ -37,12 +40,13 @@ def signup():
             elif not name or not surname or not password or not email:
                 msg = 'Please fill out the form!'
             else:
-                filename = secure_filename(id_card.filename)
-                id_card.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+                #filename = secure_filename(id_card.filename)
+                id_card.save(os.path.join(current_app.config['UPLOAD_FOLDER'], id_card.filename))
                 
                 # Account doesnt exists and the form data is valid, now insert new account into accounts table
-                cursor.execute("INSERT INTO accounts (name, surname, email, filename, password, amount) VALUES"
-                               "(%s, %s, %s, %s, %s, 0)", (name, surname, email, id_card.filename, password,))
+                query = "INSERT INTO accounts (name, surname, email, filename, password, amount) VALUES ('"+name+"','"+surname+"','"+email+"','"+id_card.filename+"','"+password+"',0)"
+                print(query)
+                cursor.execute(query)
                 db.connection.commit()
 
                 msg = 'You have successfully registered!'

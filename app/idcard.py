@@ -1,4 +1,4 @@
-from flask import Blueprint, session, current_app, send_file, render_template, request
+from flask import Blueprint, session, render_template, request
 from database import db
 from app.utils import get_id_card_file
 
