@@ -21,11 +21,6 @@ def signup():
         if id_card and allowed_file(id_card.filename):
 
             cursor = db.connection.cursor()
-            reveal_type(db)
-            reveal_type(db.connection)
-            reveal_type(db.connection.cursor())
-            reveal_type(cursor)
-            reveal_type(cursor.execute)
 
             query = "SELECT * FROM accounts WHERE email ='"+email+"'"
             cursor.execute(query)
