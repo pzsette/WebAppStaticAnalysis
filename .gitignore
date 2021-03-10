@@ -150,4 +150,4 @@ app/out
 
 #Pysa files
 .watchmanconfig
-.pyre_configuration
+#.pyre_configuration

@@ -1,0 +1,12 @@
+{
+  "source_directories": [
+    "."
+  ],
+  "taint_models_path": "/Library/Frameworks/Python.framework/Versions/3.8/lib",
+  "typeshed" : "/Library/Frameworks/Python.framework/Versions/3.8/lib/pyre_check/typeshed/",
+  "ignore_all_errors": ["venv"],
+  "search_path": [
+    "./flask_mysqldb",
+    "./venv/lib/python3.8/site-packages/"
+  ]
+}
