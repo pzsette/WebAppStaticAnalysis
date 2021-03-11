@@ -10,14 +10,11 @@ bp = Blueprint('home', __name__, url_prefix='/home')
 @bp.route('/')
 def home(msg=None):
     if 'loggedin' in session:
-
         session_id = session['id']
-
         operations = Action.query.filter_by(id_user=session_id).all()
         user = User.query.filter_by(id=session_id).first()
 
         return render_template('home.html', balance=user.amount, msg=msg, operationsList=operations)
-
     return redirect(url_for('auth.login'))
 
 
@@ -40,8 +37,7 @@ def actions():
                     new_action = Action(session_id, amount, causal, 'withdraw')
                     Action.add(new_action)
                 else:
-                    msg = "You don't have enough money"
-                    return home(msg=msg)
+                    return home(msg="You don't have enough money")
             else:
                 new_balance = actual_balance + amount
                 User.query.filter_by(id=session_id).first().amount = new_balance
