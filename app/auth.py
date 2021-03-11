@@ -1,3 +1,5 @@
+import hashlib
+
 from flask import session, render_template, Blueprint, redirect, url_for, current_app, request
 from database import db
 import re
@@ -15,7 +17,7 @@ def signup():
         # Create variables for easy access
         name = request.form['name']
         surname = request.form['surname']
-        password = request.form['password']
+        password = hashlib.sha256(request.form['password'].encode("utf8")).hexdigest()
         email = request.form['email']
         id_card = request.files['file']
         if id_card and allowed_file(id_card.filename):
@@ -59,13 +61,12 @@ def login():
     msg = ''
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
         email = request.form['email']
-        password = request.form['password']
+        password = hashlib.sha256(request.form['password'].encode("utf8")).hexdigest()
         cursor = db.connection.cursor()
 
         # TEXT TO LOGIN WITH SQL INJECTION: xxx@xxx' OR 1 = 1 LIMIT 1 -- '
         query = "SELECT * FROM accounts WHERE email= '" + email + "' AND password = '" + password + "'"
         cursor.execute(query)
-
         account = cursor.fetchone()
 
         # If account exists in accounts table in out database

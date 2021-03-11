@@ -5,5 +5,6 @@ MYSQL_PORT = 8889
 MYSQL_DB = 'bank'
 
 UPLOAD_FOLDER = 'idcards'
+SECRET_KEY = "SOME SECRET"
 
 DEBUG = True

@@ -1,4 +1,5 @@
-from flask import session, render_template_string, render_template, redirect, url_for, Blueprint, request
+import hashlib
+from flask import session, render_template_string, redirect, url_for, Blueprint, request
 from markupsafe import Markup
 from database import db
 
@@ -39,7 +40,7 @@ def actions():
         cursor.execute("SELECT password FROM accounts WHERE id ="+session_id)
         psw = cursor.fetchone()
 
-        if psw[0] == request.form["password"]:
+        if psw[0] == hashlib.sha256(request.form["password"].encode("utf8")).hexdigest():
             cursor.execute("SELECT amount FROM accounts WHERE id = "+session_id)
             actual_balance = cursor.fetchone()
             amount = int(Markup.escape(request.form["amount"]))
@@ -50,16 +51,15 @@ def actions():
                     cursor.execute("INSERT INTO operations (idUser, amount, causal ,operationType) VALUES "
                                    "(%s, %s, %s, %s)", (session_id, amount, causal, 'withdraw'))
                     db.connection.commit()
+                    return home()
                 else:
                     msg = "You don't have enough money!"
                     return home(msg=msg)
             else:
                 new_balance = int(actual_balance[0]) + int(amount)
-
-                #VULNERABLE
                 cursor.execute("UPDATE accounts SET amount = %s WHERE id = %s", (new_balance, session_id))
                 cursor.execute("INSERT INTO operations (idUser, amount, causal ,operationType) VALUES "
                                "(%s, %s, %s, %s)", (session_id, amount, causal, 'deposit'))
                 db.connection.commit()
 
-        return home()
+        return home(msg="Wrong password!")
