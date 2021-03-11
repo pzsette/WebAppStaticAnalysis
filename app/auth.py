@@ -1,5 +1,5 @@
 from flask import session, render_template, Blueprint, redirect, url_for, current_app, request
-from markupsafe import Markup
+import hashlib
 from app.models.user import User
 from werkzeug.utils import secure_filename
 import re
@@ -17,7 +17,7 @@ def signup():
         # Create variables for easy access
         name = request.form['name']
         surname = request.form['surname']
-        password = request.form['password']
+        password = hashlib.sha256(request.form['password'].encode("utf8")).hexdigest()
         email = request.form['email']
         id_card = request.files['file']
         if id_card and allowed_file(id_card.filename):
@@ -55,7 +55,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        account = User.query.filter_by(email=email, password=password).first()
+        account = User.query.filter_by(email=email, password=hashlib.sha256(password.encode("utf8")).hexdigest()).first()
 
         if account:
             session['loggedin'] = True

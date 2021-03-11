@@ -2,6 +2,7 @@ from flask import session, render_template, redirect, url_for, Blueprint, reques
 from markupsafe import Markup
 from app.models.user import User
 from app.models.action import Action
+import hashlib
 
 bp = Blueprint('home', __name__, url_prefix='/home')
 
@@ -29,7 +30,7 @@ def actions():
         current_user = User.query.filter_by(id=session_id).first()
         psw = current_user.password
 
-        if psw == request.form["password"]:
+        if psw == hashlib.sha256(request.form["password"].encode("utf8")).hexdigest():
             actual_balance = current_user.amount
             amount = int(Markup.escape(request.form["amount"]))
             if request.form["action"] == 'Withdraw':
@@ -46,4 +47,4 @@ def actions():
                 User.query.filter_by(id=session_id).first().amount = new_balance
                 new_action = Action(session_id, amount, causal, 'deposit')
                 Action.add(new_action)
-        return home()
+        return home(msg="Wrong password!")
