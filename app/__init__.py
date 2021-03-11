@@ -10,5 +10,4 @@ def create_app():
         app.register_blueprint(auth.bp)
         app.register_blueprint(home.bp)
         app.register_blueprint(idcard.bp)
-
     return app
