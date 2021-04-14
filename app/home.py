@@ -1,6 +1,5 @@
 import hashlib
 from flask import session, render_template_string, redirect, url_for, Blueprint, request
-from markupsafe import Markup
 from database import db
 
 bp = Blueprint('home', __name__, url_prefix='/home')
@@ -23,6 +22,7 @@ def home(msg=None):
 
         template = open('app/templates/home.html').read()
         resp = template.replace('{{ session.surname }}', surname)
+        print(operations_list)
         return render_template_string(resp, balance=data, operationsList=operations_list, msg=msg)
 
     return redirect(url_for('auth.login'))
