@@ -15,6 +15,7 @@ def showidcard():
     return render_template('idcard.html', filename=filename)
 
 
+#http://127.0.0.1:5000/idcard/document?filename=../test.txt
 @bp.route('/document')
 def getidcard():
     filename = request.args.get('filename')
